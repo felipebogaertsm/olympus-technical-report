@@ -1,0 +1,214 @@
+\documentclass[journal]{new-aiaa}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage[version=4]{mhchem}
+\usepackage{siunitx}
+\usepackage{longtable,tabularx}
+\usepackage{float}
+\setlength\LTleft{0pt} 
+
+\title{Olympus Solid Rocket Motor: Technical Report \\ 
+\begin{Large}
+{\normalfont Propulsion System for the 2022 LASC Cooperation Program}
+\end{Large}}
+
+\author{Felipe Bogaerts de Mattos\footnote{Propulsion PMO, LASC Cooperation 2022.}}
+\affil{Universidade Federal de Juiz de Fora, Juiz de Fora, MG, Brazil}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+Olympus is the Solid Rocket Motor developed and built during the LASC Cooperation Program in order to power a 5-km apogee rocket in the 2022 edition of the event. The present report is intended to present the development of the device, as well as describe its operation and test results.
+
+\end{abstract}
+
+\tableofcontents
+
+\pagebreak
+
+\section{Nomenclature}
+
+{\renewcommand\arraystretch{1.0}
+\noindent\begin{longtable*}{@{}l @{\quad=\quad} l@{}}
+$P_0$  & Stagnation pressure \\
+$T_0$ & Stagnation temperature \\
+$C_f$& thrust coefficient
+\end{longtable*}}
+
+\section{Introduction}
+
+\lettrine{I}{ntro} here
+
+\section{Operational and Mission Requirements}
+
+The operational and mission requirements were gathered with the help of the Project Manager and the PMOs from other subsystems. The main requirements are outlined in table \ref{tab:operational-requirements}.
+
+\begin{table}[H]
+    \centering
+    \caption{Operational requirements.}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Category} & \textbf{Type} & \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        \multirow{Ballistic} & \multirow{Maximum} & Vehicle acceleration & $16$ & g \\ \cline{3-5}
+        && Velocity & $1.4$ & Mach (local) \\ \cline{2-5}
+        & \multirow{Minimum} & Rail guide exit velocity & $25$ & m/s \\ \cline{2-5} \hline
+        \multirow{Internal Ballistic} & \multirow{Maximum} & Mass flux through propellant core & $1900.00$ & kg/s-m^2 \\ \cline{3-5}
+        && Length-to-diameter & $12$ & - \\ \cline{2-5}
+        & \multirow{Minimum} & Port-to-throat area ratio & $2$ & - \\ \hline
+        \multirow{Structural} & Minimum & Overall safety factor & $3$ & - \\
+        \hline
+    \end{tabular}
+    \label{tab:operational-requirements}
+\end{table}
+
+\section{System Architecture}
+
+The propulsion system was designed with the help of multiple computer programs and simulation tools. The one that was used the most was \href{https://github.com/felipebogaertsm/srm-solver}{SRM Solver}, a internal and external ballistic software built by the author of this report. Since this program had not yet been validated in other projects of similar scale, other tools were used in order to verify its results - such as \href{https://github.com/reilleya/openMotor/tree/staging/motorlib}{OpenMotor}, RASAero, OpenRocket and MotorSim.
+
+\subsection{Internal Ballistics}
+
+\subsubsection{Propellant composition}
+
+The propellant used was a mixture of Potassium Nitrate and Sorbitol, in the proportions of 65/35, respectively. Some of the main reasons why KNSB was selected is because its components are non toxic, legally permitted and relatively safe to handle. In addition, it is one of the most widely used compositions in experimental rocketry and much has been written and documented about its behaviour and manufacture.
+
+\subsubsection{Grain Geometry}
+
+\begin{table}[H]
+    \centering
+    \caption{Propellant grain specification}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        Geometry & BATES & - \\ \hline
+        Number of segments & 7 & - \\ \hline
+        Number of segments with 45 mm core & 4 & - \\ \hline
+        Number of segments with 60 mm core & 3 & - \\ \hline
+        Outer segment diameter & 115.50 & mm \\ \hline
+        Segment length & 200.00 & mm \\ \hline
+    \end{tabular}
+    \label{tab:ib-specification}
+\end{table}
+
+\subsubsection{Performance Parameters}
+
+\begin{table}[H]
+    \centering
+    \caption{Internal ballistic specification summary, obtained by SRM Solver (inputs in \ref{tab:srm-solver-inputs}).}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Category} & \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        \multirow{Burn regression} 
+        & Propellant initial mass & 20.20 & kg \\ \cline{2-4}
+        & Average Klemmung & 303.45 & - \\ \cline{2-4}
+        & Maximum Klemmung & 350.17 & - \\ \cline{2-4}
+        & Initial to final Klemmung ratio & $1.82$ & - \\ \cline{2-4}
+        & Volumetric efficiency & $64.54$ & \% \\ \cline{2-4}
+        & Overall burn profile & regressive & - \\ \cline{2-4}
+        & Maximum initial mass flux & $1850.81$ & kg/s-m^2 \\ \hline
+        \multirow{Chamber and thrust} & Maximum chamber pressure & 5.01 & MPa \\ \cline{2-4}
+        & Average chamber pressure & 4.05 & MPa \\ \cline{2-4}
+        & Maximum thrust & 7324.05 & N \\ \cline{2-4}
+        & Average thrust & 5690.21 & N \\ \cline{2-4}
+        & Burnout time & 4.03 & s \\ \cline{2-4}
+        & Thrust time & 4.15 & s \\ \cline{2-4}
+        & Total impulse & 23,614.37 & N-s \\ \cline{2-4}
+        & Specific impulse & 119.17 & s \\ \cline{2-4}
+        & Average nozzle efficiency & 79.87 & \% \\ \cline{2-4}
+        \hline
+    \end{tabular}
+    \label{tab:ib-specification}
+\end{table}
+
+\subsection{Structure}
+
+\begin{table}[H]
+    \centering
+    \caption{Structural specification summary.}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Category} & \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        \multirow{Casing} 
+        & Material & Aluminum 6101-T6 & - \\ \cline{2-4}
+        & Yield strength & 170 & MPa \\ \cline{2-4}
+        & Safety factor & 3.13 & MPa \\ \cline{2-4}
+        & Maximum stress & $54.31$ & MPa \\ \hline
+        \multirow{Bulkhead} & Material & Aluminum 6351-T6 & - \\ \cline{2-4}
+        & Average nozzle efficiency & 80.23 & \% \\ \hline
+        \multirow{Nozzle} & Material & AISI 304 stainless steel & - \\ \cline{2-4}
+        & Material & Aluminum 6351-T6 & MPa \\ \cline{2-4}
+        & Average nozzle efficiency & 80.23 & \% \\
+        \hline
+    \end{tabular}
+    \label{tab:structural-specification}
+\end{table}
+
+\subsection{Thermal Analysis}
+
+A series of thermal analysis simulations were made in order to approximate the distribution of temperature in relation to time, during and after the operation. 
+
+\subsection{Rocket Ballistic Simulation}
+
+\begin{table}[H]
+    \centering
+    \caption{Rocket ballistic simulation.}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Category} & \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        \multirow{Casing} 
+        & Material & Aluminum 6101-T6 & - \\ \cline{2-4}
+        & Yield strength & 170 & MPa \\ \cline{2-4}
+        & Safety factor & 3.13 & MPa \\ \cline{2-4}
+        & Maximum stress & $54.31$ & MPa \\ \hline
+        \multirow{Bulkhead} & Material & Aluminum 6351-T6 & - \\ \cline{2-4}
+        & Average nozzle efficiency & 80.23 & \% \\ \hline
+        \multirow{Nozzle} & Material & AISI 304 stainless steel & - \\ \cline{2-4}
+        & Material & Aluminum 6351-T6 & MPa \\ \cline{2-4}
+        & Average nozzle efficiency & 80.23 & \% \\
+        \hline
+    \end{tabular}
+    \label{tab:ballistic-results}
+\end{table}
+
+\section{Static Hot-Fire Test Operation}
+
+\subsection{Methodology}
+
+\subsection{Preparations}
+
+\section{Flight Operation}
+
+\section{Conclusion}
+
+\section*{Appendix}
+
+\begin{table}[H]
+    \centering
+    \caption{Simulation settings used in \href{https://github.com/felipebogaertsm/srm-solver}{SRM Solver}.}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+        \hline
+        Time step & 0.01 & s \\ \hline
+        Time step multiplier & 10 & MPa \\ 
+        \hline
+        Safety factor & 4 & MPa \\ 
+        \hline
+    \end{tabular}
+    \label{tab:srm-solver-inputs}
+\end{table}
+
+\section*{Acknowledgments}
+
+\bibliography{sample}
+
+\end{document}
